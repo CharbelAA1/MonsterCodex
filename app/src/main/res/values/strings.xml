@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">surely not a dnd app</string>
+    <string name="home_page">HOME SCREEN</string>
+    <string name="monsters_db_button">Monsters Codex</string>
+    <string name="logs_button">logs</string>
+    <string name="fight_button">Fight</string>
+    <string name="Clear_logs_button">Clear Logs</string>
+
+</resources>
