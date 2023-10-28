@@ -5,5 +5,11 @@
     <string name="logs_button">logs</string>
     <string name="fight_button">Fight</string>
     <string name="Clear_logs_button">Clear Logs</string>
+    <string name="monster_name_hint">Please enter monster Name</string>
+    <string name="monster_hp_hint">Please enter monster HP</string>
+    <string name="name_of_element">Name of element</string>
+    <string name="monsters_codex_title">Monster Creation Page</string>
+    <string name="fill_the_form">Please fill in the following form, these are the damage types that you can have,
+    you choose from the following list: None, Vulnerability, Resistance, Immunity</string>
 
 </resources>
