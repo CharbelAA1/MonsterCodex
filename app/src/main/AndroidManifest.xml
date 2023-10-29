@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SurelyNotADndApp">
         <activity
-            android:name=".monster_codex_screen"
+            android:name=".MonsterCreatorScreen"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

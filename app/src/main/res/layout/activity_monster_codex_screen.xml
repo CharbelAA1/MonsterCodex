@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".monster_codex_screen">
+    android:windowSoftInputMode="adjustPan"
+    tools:context=".MonsterCreatorScreen">
 
     <TextView
         android:id="@+id/textView"
@@ -20,10 +21,11 @@
         android:id="@+id/monster_name_text_field"
         android:layout_width="250dp"
         android:layout_height="52dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="@string/monster_name_hint"
         android:inputType="textPersonName"
+        android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.248"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +39,9 @@
         android:ems="10"
         android:hint="@string/monster_hp_hint"
         android:inputType="number"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintBottom_toTopOf="@+id/fill_the_form"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.199"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,38 +49,42 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:scrollbars="vertical"
         android:layout_width="fill_parent"
-        android:fadeScrollbars="false"
         android:layout_height="400dp"
-        android:layout_marginBottom="68dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="272dp"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
+        android:windowSoftInputMode="adjustPan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/fill_the_form"
         android:layout_width="338dp"
         android:layout_height="73dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/fill_the_form"
+        android:windowSoftInputMode="adjustPan"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.657"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/monster_hp_text_field"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintHorizontal_bias="0.547"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/save_button"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/save_button"
+        android:windowSoftInputMode="adjustPan"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.604"
+        android:onClick="saveDataMonster"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

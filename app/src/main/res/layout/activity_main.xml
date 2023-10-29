@@ -30,14 +30,14 @@
         android:layout_marginBottom="60dp"
         android:backgroundTint="#0336FF"
         android:text="@string/fight_button"
-        app:layout_constraintBottom_toTopOf="@+id/monsters_codex_button"
+        app:layout_constraintBottom_toTopOf="@id/monsters_creator_screen_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/black" />
 
     <Button
-        android:id="@+id/monsters_codex_button"
+        android:id="@+id/monsters_creator_screen_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
@@ -47,7 +47,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="#E81111" />
+        app:rippleColor="#E81111"
+        android:onClick="goToMonsterCreatorScreen" />
 
     <Button
         android:id="@+id/logs_button"

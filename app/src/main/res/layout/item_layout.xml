@@ -19,7 +19,7 @@
         android:id="@+id/radioGroup"
         android:layout_width="280dp"
         android:layout_height="50dp"
-        android:checkedButton="@+id/None"
+        android:checkedButton="@id/None"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints">
@@ -28,25 +28,30 @@
             android:id="@+id/None"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp" />
+            android:layout_marginEnd="24dp"
+            android:text="@string/none_radio_button_text" />
 
         <RadioButton
             android:id="@+id/Vulnerability"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginEnd="16dp"
+            android:text="@string/vulnerability_radio_button_text"/>
 
         <RadioButton
             android:id="@+id/Resistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp" />
+            android:layout_marginEnd="24dp"
+            android:text="@string/resistance_radio_button_text"/>
 
         <RadioButton
             android:id="@+id/immunity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp" />
+            android:layout_marginEnd="24dp"
+            android:minWidth="48dp"
+            android:text="@string/Immunity_radio_button_text" />
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

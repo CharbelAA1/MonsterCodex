@@ -11,5 +11,10 @@
     <string name="monsters_codex_title">Monster Creation Page</string>
     <string name="fill_the_form">Please fill in the following form, these are the damage types that you can have,
     you choose from the following list: None, Vulnerability, Resistance, Immunity</string>
+    <string name="save_button">SAVE</string>
+    <string name="none_radio_button_text">N/A</string>
+    <string name="vulnerability_radio_button_text">V</string>
+    <string name="resistance_radio_button_text">R</string>
+    <string name="Immunity_radio_button_text">I</string>
 
 </resources>
