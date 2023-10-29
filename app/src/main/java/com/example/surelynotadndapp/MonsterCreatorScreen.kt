@@ -7,15 +7,29 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MonsterCreatorScreen : AppCompatActivity() {
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var newArrayList: ArrayList<DamageType>
+    private lateinit var monsterDatabase: MonsterDatabase
+    private lateinit var monsterDao: MonsterDao
+
     lateinit var damaType: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_monster_codex_screen)
+
+        // Initialize Room database and MonsterDao
+        monsterDatabase = Room.databaseBuilder(applicationContext, MonsterDatabase::class.java, "monster_database").build()
+        monsterDao = monsterDatabase.monsterDao()
+
         initiateDamageType()
     }
 
@@ -77,32 +91,94 @@ class MonsterCreatorScreen : AppCompatActivity() {
         val monsterNameText = monsterName.text.toString().trim()
         val monsterHPText = monsterHP.text.toString().trim()
 
-        // Validate the monster name
         if (monsterNameText.isEmpty() || monsterNameText.length > 30) {
             Toast.makeText(this, "Monster Name must not be empty and should be 30 characters or less", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Validate the monster HP
         if (monsterHPText.isEmpty() || monsterHPText.length > 4) {
             Toast.makeText(this, "Monster HP must not be empty and should be 4 characters or less", Toast.LENGTH_SHORT).show()
             return
         }
-        val adapter = newRecyclerView.adapter as? MyAdapter
 
-        if (adapter != null) {
-            // Iterate through the RecyclerView items
-            for (i in 0 until newArrayList.size) {
-                val damageType = newArrayList[i].damageType
-                val selectedRadioButtonText = newArrayList[i].selectedRadioButtonText
-                // Print the values
-                Log.d("MonsterCreatorScreen", "Damage Type: $damageType")
-                Log.d("MonsterCreatorScreen", "Selected RadioButton Text: $selectedRadioButtonText")
+        val monsterEntity = MonsterEntity(
+            monsterName = monsterNameText,
+            monsterHP = monsterHPText.toInt(),
+            acid = getSelectedDamageType("Acid"),
+            cold = getSelectedDamageType("Cold"),
+            fire = getSelectedDamageType("Fire"),
+            force = getSelectedDamageType("Force"),
+            lightning = getSelectedDamageType("Lightning"),
+            necrotic = getSelectedDamageType("Necrotic"),
+            poison = getSelectedDamageType("Poison"),
+            psychic = getSelectedDamageType("Psychic"),
+            radiant = getSelectedDamageType("Radiant"),
+            thunder = getSelectedDamageType("Thunder"),
+            bludgeoning = getSelectedDamageType("Bludgeoning"),
+            slashing = getSelectedDamageType("Slashing"),
+            piercing = getSelectedDamageType("Piercing"),
+            nonMagicMelee = getSelectedDamageType("NonMagicMelee")
+        )
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                monsterDao.insertMonster(monsterEntity)
+                runOnUiThread {
+                    Toast.makeText(this@MonsterCreatorScreen, "Monster data saved successfully", Toast.LENGTH_SHORT).show()
+                }
+                observeAndPrintMonsters()
+            } catch (e: Exception) {
+                // Handle the error (e.g., database is not created or other exceptions)
+                Log.e("MonsterCreatorScreen", "Error saving monster data: ${e.message}")
+                runOnUiThread {
+                    Toast.makeText(this@MonsterCreatorScreen, "Error saving monster data", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+    }
 
-        // Print the monster name and HP
-        Log.d("MonsterCreatorScreen", "Monster Name: ${monsterName.text}")
-        Log.d("MonsterCreatorScreen", "Monster HP: ${monsterHP.text}")
+    private fun getSelectedDamageType(damageType: String): String {
+        val selectedRadioButton = newArrayList.find { it.damageType == damageType }
+        return selectedRadioButton?.selectedRadioButtonText ?: "None"
+    }
+
+    private fun observeAndPrintMonsters() {
+        CoroutineScope(Dispatchers.IO).launch {
+            monsterDao.getMonsterOrderedByName().collect { monsters ->
+                for (monster in monsters) {
+                    val damageTypes = getDamageTypesAsString(monster)
+                    Log.d("MonsterCreatorScreen", "Monster Name: ${monster.monsterName}, HP: ${monster.monsterHP},  Damage Types: $damageTypes")
+                    // You can print other monster properties here as needed
+                }
+            }
+        }
+    }
+    private fun getDamageTypesAsString(monster: MonsterEntity): String {
+        val damageTypeList = mutableListOf<String>()
+        val damageTypes = arrayOf(
+            "Acid", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Poison",
+            "Psychic", "Radiant", "Thunder", "Bludgeoning", "Slashing", "Piercing", "NonMagicMelee"
+        )
+        for (damageType in damageTypes) {
+            val damageTypeText = when (damageType) {
+                "Acid" -> monster.acid
+                "Cold" -> monster.cold
+                "Fire" -> monster.fire
+                "Force" -> monster.force
+                "Lightning" -> monster.lightning
+                "Necrotic" -> monster.necrotic
+                "Poison" -> monster.poison
+                "Psychic" -> monster.psychic
+                "Radiant" -> monster.radiant
+                "Thunder" -> monster.thunder
+                "Bludgeoning" -> monster.bludgeoning
+                "Slashing" -> monster.slashing
+                "Piercing" -> monster.piercing
+                "NonMagicMelee" -> monster.nonMagicMelee
+                else -> "None"
+            }
+            damageTypeList.add("$damageType: $damageTypeText")
+        }
+        return damageTypeList.joinToString(", ")
     }
 }
