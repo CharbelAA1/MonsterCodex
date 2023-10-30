@@ -8,10 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MonsterCreatorScreen : AppCompatActivity() {
@@ -51,7 +49,7 @@ class MonsterCreatorScreen : AppCompatActivity() {
             "NonMagicMelee"
         )
 
-        newRecyclerView = findViewById(R.id.recyclerView)
+        newRecyclerView = findViewById(R.id.recyclerView_here)
         newRecyclerView.layoutManager = LinearLayoutManager(this)
         newRecyclerView.setHasFixedSize(true)
 
@@ -86,8 +84,8 @@ class MonsterCreatorScreen : AppCompatActivity() {
     }
 
     fun saveDataMonster(view: View) {
-        val monsterName = findViewById<EditText>(R.id.monster_name_text_field)
-        val monsterHP = findViewById<EditText>(R.id.monster_hp_text_field)
+        val monsterName = findViewById<EditText>(R.id.monster_name_text_field_here)
+        val monsterHP = findViewById<EditText>(R.id.monster_hp_text_field_here)
         val monsterNameText = monsterName.text.toString().trim()
         val monsterHPText = monsterHP.text.toString().trim()
 

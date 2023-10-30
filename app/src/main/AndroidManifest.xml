@@ -10,6 +10,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SurelyNotADndApp">
         <activity
+            android:name=".monsterdataScreen.MonsterDetails"
+            android:exported="false" />
+        <activity
+            android:name=".monsterdataScreen.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".monsterdataScreen.MonsterDataScreen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_monster_data_screen"
+            android:theme="@style/Theme.SurelyNotADndApp.Fullscreen" />
+        <activity
+            android:name=".monsterdataScreen.ScrollingActivity"
+            android:exported="false"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/Theme.SurelyNotADndApp.NoActionBar" />
+        <activity
             android:name=".MonsterCreatorScreen"
             android:exported="false" />
         <activity
