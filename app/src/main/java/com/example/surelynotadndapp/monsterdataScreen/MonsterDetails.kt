@@ -1,45 +1,56 @@
 package com.example.surelynotadndapp.monsterdataScreen
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.surelynotadndapp.MonsterDatabase
 import com.example.surelynotadndapp.MonsterEntity
 import com.example.surelynotadndapp.R
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-class MonsterDetails : AppCompatActivity() {
+
+
+class MonsterDetails : AppCompatActivity()  {
 
     private var monsterId: Int = 0
+    private lateinit var damageTypeRecyclerView: RecyclerView
+    private lateinit var damageTypeAdapter: DamageTypeAdapter
+    private val damageTypesList = listOf("Acid", "Cold", "Fire", "Force","Lightning","Necrotic","Poison","Psychic","Radiant","Thunder","Bludgeoning","slashing","Piercing","NonMagicMelee")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_monster_details)
 
-        // Get the monsterId from the intent
         monsterId = intent.getIntExtra("monsterId", 0)
+        val saveButton: Button = findViewById(R.id.save_button1)
+        val deleteButton: Button = findViewById(R.id.delete_button)
 
-        loadMonsterDetails()
+        damageTypeRecyclerView = findViewById(R.id.recyclerView_here)
+        damageTypeAdapter = DamageTypeAdapter(damageTypesList, mutableListOf())
 
-        val saveButton: Button = findViewById(R.id.save_button)
+        damageTypeRecyclerView.adapter = damageTypeAdapter
+        damageTypeRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         saveButton.setOnClickListener {
             saveMonsterDetails()
         }
 
-        val deleteButton: Button = findViewById(R.id.delete_button)
         deleteButton.setOnClickListener {
             deleteMonster()
         }
+
+        loadMonsterDetails(damageTypeAdapter)
     }
 
-    private fun loadMonsterDetails() {
+    private fun loadMonsterDetails(damageTypeAdapter: DamageTypeAdapter) {
         if (monsterId != 0) {
             GlobalScope.launch(Dispatchers.Main) {
                 val repository = MonsterRepository(MonsterDatabase.getDatabase(this@MonsterDetails).monsterDao())
@@ -50,6 +61,15 @@ class MonsterDetails : AppCompatActivity() {
                     val hpTextField: EditText = findViewById(R.id.monster_hp_text_field_here)
                     nameTextField.setText(monster.monsterName)
                     hpTextField.setText(monster.monsterHP.toString())
+
+                    val selectedDamageTypes = listOf(
+                        monster.acid, monster.cold, monster.fire, monster.force,
+                        monster.lightning, monster.necrotic, monster.poison, monster.psychic,
+                        monster.radiant, monster.thunder, monster.bludgeoning, monster.slashing,
+                        monster.piercing, monster.nonMagicMelee
+                    )
+
+                    damageTypeAdapter.setSelectedDamageTypes(*selectedDamageTypes.toTypedArray())
                 }
             }
         }
@@ -62,7 +82,24 @@ class MonsterDetails : AppCompatActivity() {
         val hp = hpTextField.text.toString().toInt()
 
         if (monsterId != 0) {
-            val updatedMonster = MonsterEntity(monsterId, name, hp, /* other fields */)
+            val selectedDamageTypes = damageTypeAdapter.getSelectedDamageTypes()
+            val updatedMonster = MonsterEntity(
+                monsterId, name, hp,
+                selectedDamageTypes[0] ?: "None",
+                selectedDamageTypes[1] ?: "None",
+                selectedDamageTypes[2] ?: "None",
+                selectedDamageTypes[3] ?: "None",
+                selectedDamageTypes[4] ?: "None",
+                selectedDamageTypes[5] ?: "None",
+                selectedDamageTypes[6] ?: "None",
+                selectedDamageTypes[7] ?: "None",
+                selectedDamageTypes[8] ?: "None",
+                selectedDamageTypes[9] ?: "None",
+                selectedDamageTypes[10] ?: "None",
+                selectedDamageTypes[11] ?: "None",
+                selectedDamageTypes[12] ?: "None"
+            )
+
             GlobalScope.launch(Dispatchers.IO) {
                 val repository = MonsterRepository(MonsterDatabase.getDatabase(this@MonsterDetails).monsterDao())
                 repository.updateMonster(updatedMonster)
@@ -88,7 +125,7 @@ class MonsterDetails : AppCompatActivity() {
     }
 
     private fun navigateBackAndReload() {
-        val intent = Intent(this, MonsterDataScreen::class.java) // Replace with the actual previous activity
+        val intent = Intent(this, MonsterDataScreen::class.java)
         startActivity(intent)
         finish()
     }

@@ -11,8 +11,6 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dexOutputDir: File = codeCacheDir

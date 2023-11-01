@@ -8,16 +8,16 @@
     >
 
     <TextView
-        android:id="@+id/damage_type"
+        android:id="@+id/damage_type2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/radioGroup"
+        app:layout_constraintEnd_toStartOf="@+id/radioGroup2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/radioGroup2"
         android:layout_width="280dp"
         android:layout_height="50dp"
         android:checkedButton="@id/None"
@@ -26,28 +26,28 @@
         tools:ignore="MissingConstraints">
 
         <RadioButton
-            android:id="@+id/None"
+            android:id="@+id/None2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:text="@string/none_radio_button_text" />
 
         <RadioButton
-            android:id="@+id/Vulnerability"
+            android:id="@+id/Vulnerability2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/vulnerability_radio_button_text"/>
 
         <RadioButton
-            android:id="@+id/Resistance"
+            android:id="@+id/Resistance2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:text="@string/resistance_radio_button_text"/>
 
         <RadioButton
-            android:id="@+id/immunity"
+            android:id="@+id/Immunity2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"

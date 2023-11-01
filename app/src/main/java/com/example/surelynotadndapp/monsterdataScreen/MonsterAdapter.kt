@@ -1,5 +1,7 @@
 package com.example.surelynotadndapp.monsterdataScreen
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +16,6 @@ class MonsterAdapter(private val monsterList: List<MonsterEntity>) :
 
     class MonsterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardView: CardView = itemView.findViewById(R.id.cardView) // Reference the CardView here
-
         val monsterNameTextView: TextView = itemView.findViewById(R.id.Monster_Name_here)
         val monsterHPTextView: TextView = itemView.findViewById(R.id.Monster_hp_here)
     }
@@ -30,7 +31,13 @@ class MonsterAdapter(private val monsterList: List<MonsterEntity>) :
         holder.monsterHPTextView.text = currentMonster.monsterHP.toString()
 
         holder.cardView.setTag(R.string.monster_id_tag, currentMonster.id)
-
+        // Add click handling for the cardView
+        holder.cardView.setOnClickListener {
+            // Handle click event here, e.g., open monster details screen
+            val intent = Intent(holder.cardView.context, MonsterDetails::class.java)
+            intent.putExtra("monsterId", currentMonster.id)
+            holder.cardView.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = monsterList.size
