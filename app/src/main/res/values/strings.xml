@@ -21,7 +21,7 @@
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="monster_id_tag">monsterId</string>
     <string name="monster_creator_button">Create your Monster</string>
-
+    <string name="take_damage">Fight</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

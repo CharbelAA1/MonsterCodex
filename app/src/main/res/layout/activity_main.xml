@@ -30,33 +30,34 @@
         android:layout_marginBottom="60dp"
         android:backgroundTint="#0336FF"
         android:text="@string/fight_button"
-        app:layout_constraintBottom_toTopOf="@id/monsters_creator_screen_button"
+        app:layout_constraintBottom_toTopOf="@id/monster_creator_screen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/black" />
+        app:strokeColor="@color/black"
+        android:onClick="goToFightScreen"/>
 
     <Button
-        android:id="@+id/monsters_creator_screen_button"
+        android:id="@+id/monster_creator_screen"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="#0336FF"
+        android:onClick="goToMonsterCreatorScreen"
+        android:text="@string/monster_creator_button"
+        app:layout_constraintBottom_toTopOf="@+id/monster_codex_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="#E81111" />
+
+    <Button
+        android:id="@+id/monster_codex_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
         android:backgroundTint="#0336FF"
         android:text="@string/monsters_db_button"
-        app:layout_constraintBottom_toTopOf="@+id/logs_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="#E81111"
-        android:onClick="goToMonsterCreatorScreen" />
-
-    <Button
-        android:id="@+id/logs_button"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:backgroundTint="#0336FF"
-        android:text="@string/logs_button"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

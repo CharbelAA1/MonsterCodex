@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [MonsterEntity::class], version = 1)
+@Database(entities = [MonsterEntity::class], version = 2, exportSchema = false)
 abstract class MonsterDatabase : RoomDatabase(){
     abstract fun monsterDao(): MonsterDao
 
@@ -24,5 +24,22 @@ abstract class MonsterDatabase : RoomDatabase(){
                 instance
             }
         }
+
+
+        fun getInstance(context: Context): MonsterDatabase {
+            synchronized(this) {
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        MonsterDatabase::class.java,
+                        "monster_database"
+                    ).build()
+                    INSTANCE = instance
+                }
+                return instance
+            }
+        }
+
     }
 }

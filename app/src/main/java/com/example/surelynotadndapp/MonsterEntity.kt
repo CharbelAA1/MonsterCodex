@@ -5,6 +5,7 @@ import androidx.room.*
 data class MonsterEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    @ColumnInfo(name = "monsterName")
     val monsterName: String,
     val monsterHP: Int,
     //val ac: Int,

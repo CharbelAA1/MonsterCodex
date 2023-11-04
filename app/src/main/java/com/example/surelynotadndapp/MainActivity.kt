@@ -29,4 +29,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun goToFightScreen(view: View) {
+        val intent = Intent(this, FightScreen:: class.java)
+        startActivity(intent)
+    }
 }

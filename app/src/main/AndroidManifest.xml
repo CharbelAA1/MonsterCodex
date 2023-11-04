@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SurelyNotADndApp">
         <activity
-            android:name=".fightscreen.FightScreen"
+            android:name=".FightScreen"
             android:exported="false" />
         <activity
             android:name=".monsterdataScreen.MonsterDetails"
