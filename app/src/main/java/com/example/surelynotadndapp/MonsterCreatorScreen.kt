@@ -50,6 +50,7 @@ class MonsterCreatorScreen : AppCompatActivity() {
         )
 
         newRecyclerView = findViewById(R.id.recyclerView_here)
+        newRecyclerView.setItemViewCacheSize(25);
         newRecyclerView.layoutManager = LinearLayoutManager(this)
         newRecyclerView.setHasFixedSize(true)
 

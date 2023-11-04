@@ -28,6 +28,7 @@ class MonsterDataScreen : AppCompatActivity() {
         setContentView(R.layout.activity_monster_data_screen)
 
         recyclerView = findViewById(R.id.recyclerViewMonsterDataScreen)
+        recyclerView.setItemViewCacheSize(25);
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         monsterDatabase = Room.databaseBuilder(applicationContext, MonsterDatabase::class.java, "monster_database").build()

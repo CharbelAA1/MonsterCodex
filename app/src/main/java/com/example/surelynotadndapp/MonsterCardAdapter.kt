@@ -1,6 +1,5 @@
 package com.example.surelynotadndapp
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ class MonsterCardAdapter: RecyclerView.Adapter<MonsterCardAdapter.MonsterCardVie
 
     private val monsters: MutableList<MonsterEntity> = mutableListOf()
     private var monsterNames: List<String> = emptyList()
+    private val selectedStates: MutableMap<Int, Boolean> = mutableMapOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonsterCardViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_monster_card, parent, false)
@@ -19,6 +19,7 @@ class MonsterCardAdapter: RecyclerView.Adapter<MonsterCardAdapter.MonsterCardVie
 
     override fun onBindViewHolder(holder: MonsterCardViewHolder, position: Int) {
         val monster = monsters[position]
+        val selected = selectedStates.getOrPut(position) { false }
         holder.bind(monster, monsterNames)
     }
 
@@ -38,7 +39,8 @@ class MonsterCardAdapter: RecyclerView.Adapter<MonsterCardAdapter.MonsterCardVie
 
     inner class MonsterCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val monsterSpinner: Spinner = itemView.findViewById(R.id.monsterSpinner)
-        private val lockInButton: Button = itemView.findViewById(R.id.lockInButton)
+
+
 
         fun bind(monster: MonsterEntity, names: List<String>) {
             // Set up the UI elements in your item_monster_card.xml layout
@@ -46,9 +48,7 @@ class MonsterCardAdapter: RecyclerView.Adapter<MonsterCardAdapter.MonsterCardVie
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             monsterSpinner.adapter = spinnerAdapter
 
-            lockInButton.setOnClickListener {
-                // Handle the lock-in action if needed
-            }
+            monsterSpinner.isEnabled = true
         }
     }
 }

@@ -6,11 +6,10 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import com.example.surelynotadndapp.MonsterEntity
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.toList
 
@@ -18,6 +17,10 @@ import kotlinx.coroutines.flow.toList
 class FightScreen  : AppCompatActivity() {
     private lateinit var monsterAdapter: MonsterCardAdapter
     private lateinit var monsterRecyclerView: RecyclerView
+
+    private val monsterDao: MonsterDao by lazy {
+        MonsterDatabase.getInstance(application).monsterDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,8 @@ class FightScreen  : AppCompatActivity() {
 
         // Initialize the RecyclerView and Adapter
         monsterRecyclerView.layoutManager = LinearLayoutManager(this)
+        monsterRecyclerView.setItemViewCacheSize(50);
+
         monsterAdapter = MonsterCardAdapter()
         monsterRecyclerView.adapter = monsterAdapter
 
@@ -41,9 +46,16 @@ class FightScreen  : AppCompatActivity() {
     }
 
     private fun loadMonsterNamesFromDatabase() {
-        // Fetch monster names from the database
-        val monsterNames = listOf("Monster 1", "Monster 2", "Monster 3") // Replace with your database query
+        val coroutineScope = CoroutineScope(Dispatchers.IO) // Use the appropriate dispatcher
 
-        monsterAdapter.setMonsterNames(monsterNames)
+        coroutineScope.launch {
+            val monsterNames = monsterDao.getMonsterOrderedByName().map { monsterList ->
+                monsterList.map { it.monsterName }
+            }.first()
+
+            withContext(Dispatchers.Main) {
+                monsterAdapter.setMonsterNames(monsterNames)
+            }
+        }
     }
 }
