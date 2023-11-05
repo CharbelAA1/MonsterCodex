@@ -21,8 +21,14 @@ interface  MonsterDao {
     @Update
     suspend fun updateMonster(monster: MonsterEntity)
 
-
     @Query("SELECT * FROM monsters")
     fun getAllMonsters(): Flow<List<MonsterEntity>>
+
+    @Query("SELECT * FROM monsters WHERE monsterName = :name")
+    fun getMonsterByName(name: String): Flow<MonsterEntity?>
+
+    // Define a function to get the damage value for a specific type from a MonsterEntity
+    @Query("SELECT :damageType FROM monsters WHERE monsterName = :name")
+    fun getDamageValueByType(name: String, damageType: String): String
 
 }

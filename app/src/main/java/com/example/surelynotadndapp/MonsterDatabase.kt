@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [MonsterEntity::class], version = 2, exportSchema = false)
-abstract class MonsterDatabase : RoomDatabase(){
+abstract class MonsterDatabase : RoomDatabase() {
     abstract fun monsterDao(): MonsterDao
 
     companion object {
@@ -25,7 +25,6 @@ abstract class MonsterDatabase : RoomDatabase(){
             }
         }
 
-
         fun getInstance(context: Context): MonsterDatabase {
             synchronized(this) {
                 var instance = INSTANCE
@@ -40,6 +39,5 @@ abstract class MonsterDatabase : RoomDatabase(){
                 return instance
             }
         }
-
     }
 }
