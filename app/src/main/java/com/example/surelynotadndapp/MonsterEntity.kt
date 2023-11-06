@@ -8,7 +8,7 @@ data class MonsterEntity(
     @ColumnInfo(name = "monsterName")
     val monsterName: String,
     val monsterHP: Int,
-    //val ac: Int,
+    val ac: Int,
     val acid: String? = "None",  // Nullable to handle non-selected options
     val cold: String? = "None",
     val fire: String? = "None",

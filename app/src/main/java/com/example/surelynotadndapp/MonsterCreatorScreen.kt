@@ -1,5 +1,6 @@
 package com.example.surelynotadndapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -87,22 +88,30 @@ class MonsterCreatorScreen : AppCompatActivity() {
     fun saveDataMonster(view: View) {
         val monsterName = findViewById<EditText>(R.id.monster_name_text_field_here)
         val monsterHP = findViewById<EditText>(R.id.monster_hp_text_field_here)
+        val monsterAC = findViewById<EditText>(R.id.monster_ac_text_field)
         val monsterNameText = monsterName.text.toString().trim()
         val monsterHPText = monsterHP.text.toString().trim()
+        val monsterACText = monsterAC.text.toString().trim()
 
         if (monsterNameText.isEmpty() || monsterNameText.length > 30) {
-            Toast.makeText(this, "Monster Name must not be empty and should be 30 characters or less", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Monster Name must not be empty and should be 30 characters or less", Toast.LENGTH_LONG).show()
             return
         }
 
-        if (monsterHPText.isEmpty() || monsterHPText.length > 4) {
-            Toast.makeText(this, "Monster HP must not be empty and should be 4 characters or less", Toast.LENGTH_SHORT).show()
+        if (monsterHPText.isEmpty() || monsterHPText.length > 4 || Integer.parseInt(monsterHPText) < 1) {
+            Toast.makeText(this, "Monster HP must not be empty, should be 4 characters or less, And Must be greater than 0", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        if (monsterACText.isEmpty() || monsterHPText.length > 4 || Integer.parseInt(monsterHPText) < 1) {
+            Toast.makeText(this, "Monster AC must not be empty and should be 4 characters or less", Toast.LENGTH_LONG).show()
             return
         }
 
         val monsterEntity = MonsterEntity(
             monsterName = monsterNameText,
             monsterHP = monsterHPText.toInt(),
+            ac = monsterACText.toInt(),
             acid = getSelectedDamageType("Acid"),
             cold = getSelectedDamageType("Cold"),
             fire = getSelectedDamageType("Fire"),
@@ -124,6 +133,14 @@ class MonsterCreatorScreen : AppCompatActivity() {
                 monsterDao.insertMonster(monsterEntity)
                 runOnUiThread {
                     Toast.makeText(this@MonsterCreatorScreen, "Monster data saved successfully", Toast.LENGTH_SHORT).show()
+
+                    // Navigate back to the main activity
+                    val intent = Intent(this@MonsterCreatorScreen, MainActivity::class.java)
+                    startActivity(intent)
+
+                    // Finish the current activity to prevent going back to it
+                    finish()
+
                 }
                 observeAndPrintMonsters()
             } catch (e: Exception) {

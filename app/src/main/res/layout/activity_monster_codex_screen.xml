@@ -41,7 +41,6 @@
         android:inputType="number"
         android:minHeight="48dp"
         android:textColorHint="#757575"
-        app:layout_constraintBottom_toTopOf="@+id/fill_the_form"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.199"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,22 +59,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/fill_the_form"
-        android:layout_width="338dp"
-        android:layout_height="73dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/fill_the_form"
-        android:windowSoftInputMode="adjustPan"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView_here"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.547"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/save_button"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:onClick="saveDataMonster"
         android:text="@string/save_button"
         android:windowSoftInputMode="adjustPan"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -83,8 +71,21 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView_here"
-        app:layout_constraintVertical_bias="0.604"
-        android:onClick="saveDataMonster"
-        />
+        app:layout_constraintVertical_bias="0.604" />
+
+    <EditText
+        android:id="@+id/monster_ac_text_field"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/monster_ac_hint"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView_here"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.199"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/monster_hp_text_field_here"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

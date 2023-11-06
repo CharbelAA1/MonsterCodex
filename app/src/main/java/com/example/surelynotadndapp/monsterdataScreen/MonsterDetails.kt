@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.surelynotadndapp.MainActivity
 import com.example.surelynotadndapp.MonsterDatabase
 import com.example.surelynotadndapp.MonsterEntity
 import com.example.surelynotadndapp.R
@@ -59,9 +60,10 @@ class MonsterDetails : AppCompatActivity()  {
                 if (monster != null) {
                     val nameTextField: EditText = findViewById(R.id.monster_name_text_field_here)
                     val hpTextField: EditText = findViewById(R.id.monster_hp_text_field_here)
+                    val acTextField: EditText = findViewById(R.id.edit_ac_text_field)
                     nameTextField.setText(monster.monsterName)
                     hpTextField.setText(monster.monsterHP.toString())
-
+                    acTextField.setText(monster.ac.toString())
                     val selectedDamageTypes = listOf(
                         monster.acid, monster.cold, monster.fire, monster.force,
                         monster.lightning, monster.necrotic, monster.poison, monster.psychic,
@@ -78,13 +80,15 @@ class MonsterDetails : AppCompatActivity()  {
     private fun saveMonsterDetails() {
         val nameTextField: EditText = findViewById(R.id.monster_name_text_field_here)
         val hpTextField: EditText = findViewById(R.id.monster_hp_text_field_here)
+        val acTextField: EditText = findViewById(R.id.edit_ac_text_field)
         val name = nameTextField.text.toString()
         val hp = hpTextField.text.toString().toInt()
+        val ac = acTextField.text.toString().toInt()
 
         if (monsterId != 0) {
             val selectedDamageTypes = damageTypeAdapter.getSelectedDamageTypes()
             val updatedMonster = MonsterEntity(
-                monsterId, name, hp,
+                monsterId, name, hp,ac,
                 selectedDamageTypes[0] ?: "None",
                 selectedDamageTypes[1] ?: "None",
                 selectedDamageTypes[2] ?: "None",
@@ -125,7 +129,7 @@ class MonsterDetails : AppCompatActivity()  {
     }
 
     private fun navigateBackAndReload() {
-        val intent = Intent(this, MonsterDataScreen::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

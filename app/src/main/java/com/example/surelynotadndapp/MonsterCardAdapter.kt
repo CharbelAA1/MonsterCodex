@@ -40,7 +40,7 @@ class MonsterCardAdapter(
     }
 
     fun addMonsterCard() {
-        monsters.add(MonsterEntity(0, "", 0))
+        monsters.add(MonsterEntity(0, "", 0,0))
         notifyDataSetChanged()
     }
 

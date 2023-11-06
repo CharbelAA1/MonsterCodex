@@ -2,15 +2,21 @@ package com.example.surelynotadndapp
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.*
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import com.example.surelynotadndapp.monsterdataScreen.MonsterAdapterListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
-class FightScreen  : AppCompatActivity() {
+class FightScreen : AppCompatActivity(), MonsterAdapterListener {
     private lateinit var monsterAdapter: MonsterCardAdapter
     private lateinit var pickedMonsterAdapter: PickedMonsterCardAdapter
 
@@ -19,7 +25,7 @@ class FightScreen  : AppCompatActivity() {
     private val selectedMonsters: MutableList<String> = mutableListOf()
     private val monsterNames: MutableList<String> = mutableListOf()
 
-    private val addMonsterButtonEnabled: Boolean = true
+    private var addMonsterButtonEnabled: Boolean = true
     private var lockInButtonEnabled: Boolean = false
 
     private val monsterDao: MonsterDao by lazy {
@@ -45,9 +51,11 @@ class FightScreen  : AppCompatActivity() {
             Log.d("MonsterCardAdapter", "Selected Monster: $selectedMonsterName")
         }
 
-        pickedMonsterAdapter = PickedMonsterCardAdapter()  // Initialize the adapter
-        monsterRecyclerView.adapter = pickedMonsterAdapter
+        pickedMonsterAdapter =
+            PickedMonsterCardAdapter(monsterRecyclerView, this)  // Initialize the adapter
+
         monsterRecyclerView.adapter = monsterAdapter
+
 
         addMonsterButton.setOnClickListener {
             // Add a new card when the "Add Monster" button is clicked
@@ -60,6 +68,7 @@ class FightScreen  : AppCompatActivity() {
             // Lock in selected monsters when the "Lock In" button is pressed
             lockInSelectedMonsters()
             lockInButtonEnabled = false
+            addMonsterButtonEnabled = false
             updateButtonStates()
         }
 
@@ -67,7 +76,10 @@ class FightScreen  : AppCompatActivity() {
             // Clear the RecyclerView and enable "Add Monster" button when "Clear Fight" button is pressed
             selectedMonsters.clear()
             monsterAdapter.clearMonsters()
+            pickedMonsterAdapter.clearMonsters()
             lockInButtonEnabled = false // Disable the "Lock In" button after clearing
+            addMonsterButtonEnabled = true
+            monsterRecyclerView.adapter = monsterAdapter
             updateButtonStates()
         }
 
@@ -80,9 +92,25 @@ class FightScreen  : AppCompatActivity() {
         val addMonsterButton = findViewById<Button>(R.id.addMonsterButton)
         val lockInButton = findViewById<Button>(R.id.lockInButton)
 
-        addMonsterButton.isEnabled = addMonsterButtonEnabled // Enable "Add Monster" button when enabled
+        addMonsterButton.isEnabled =
+            addMonsterButtonEnabled // Enable "Add Monster" button when enabled
         lockInButton.isEnabled = lockInButtonEnabled // Enable "Lock In" button when enabled
     }
+
+    override fun onMonsterRemoved() {
+        // Check if all monsters are removed
+        if (pickedMonsterAdapter.itemCount == 0) {
+            // Enable the "Add Monster" button
+            selectedMonsters.clear()
+            monsterAdapter.clearMonsters()
+            pickedMonsterAdapter.clearMonsters()
+            lockInButtonEnabled = false // Disable the "Lock In" button after clearing
+            addMonsterButtonEnabled = true
+            monsterRecyclerView.adapter = monsterAdapter
+            updateButtonStates()
+        }
+    }
+
 
     private fun loadMonsterNamesFromDatabase() {
         val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -108,7 +136,10 @@ class FightScreen  : AppCompatActivity() {
             val coroutineScope = CoroutineScope(Dispatchers.IO)
             coroutineScope.launch {
                 val selectedMonster = monsterDao.getMonsterByName(selectedMonsterName).firstOrNull()
-                Log.d("LockIn", "After Locking Selection: $selectedMonsterName, HP: ${selectedMonster?.monsterHP}")
+                Log.d(
+                    "LockIn",
+                    "After Locking Selection: $selectedMonsterName, HP: ${selectedMonster?.monsterHP}"
+                )
                 withContext(Dispatchers.Main) {
                     if (selectedMonster != null) {
                         pickedMonsterAdapter.addMonsterCard(selectedMonster)
@@ -117,5 +148,4 @@ class FightScreen  : AppCompatActivity() {
             }
         }
     }
-
 }

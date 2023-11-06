@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.surelynotadndapp.monsterdataScreen.MonsterAdapterListener
 
-class PickedMonsterCardAdapter : RecyclerView.Adapter<PickedMonsterCardAdapter.PickedMonsterCardViewHolder>() {
+class PickedMonsterCardAdapter (private val recyclerView: RecyclerView,
+                                private val listener: MonsterAdapterListener
+): RecyclerView.Adapter<PickedMonsterCardAdapter.PickedMonsterCardViewHolder>() {
 
     init {
         Log.d("PickedMonsterCardAdapte", "Adapter created")
@@ -40,12 +43,21 @@ class PickedMonsterCardAdapter : RecyclerView.Adapter<PickedMonsterCardAdapter.P
         Log.d("PickedMonsterCardAdapte", "addMonsterCard: Added a monster")
     }
 
+    fun clearMonsters() {
+        monsters.clear()
+        notifyDataSetChanged()
+    }
+
     inner class PickedMonsterCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val monsterNameTextView: TextView = itemView.findViewById(R.id.monster_name_in_fight_screen)
+        private val monsterNameTextView: TextView =
+            itemView.findViewById(R.id.monster_name_in_fight_screen)
         private val hpTextView: TextView = itemView.findViewById(R.id.hp_text_view)
         private val fightButton: Button = itemView.findViewById(R.id.fight_button_in_card)
         private val damageTakenTypeSpinner: Spinner = itemView.findViewById(R.id.damage_taken_type)
-        private val damageTakenTextField: EditText = itemView.findViewById(R.id.damage_taken_text_field)
+        private val damageTakenTextField: EditText =
+            itemView.findViewById(R.id.damage_taken_text_field)
+        private val monsterAC: TextView = itemView.findViewById(R.id.ac_fight_screen_text_view)
+        private val removeMonster: Button = itemView.findViewById(R.id.delete_monster)
 
         private var itemPosition: Int = -1 // Store the position of the ViewHolder
 
@@ -54,8 +66,10 @@ class PickedMonsterCardAdapter : RecyclerView.Adapter<PickedMonsterCardAdapter.P
 
             monsterNameTextView.text = monster.monsterName
             hpTextView.text = "${monster.monsterHP}"
+            monsterAC.text = "AC: ${monster.ac}"
 
-            val hpToRemoveText = hpTextView.text.toString() // Get the text from hpTextView as a String
+            val hpToRemoveText =
+                hpTextView.text.toString() // Get the text from hpTextView as a String
             var currentHP: Int = hpToRemoveText.toInt()
 
 
@@ -77,14 +91,17 @@ class PickedMonsterCardAdapter : RecyclerView.Adapter<PickedMonsterCardAdapter.P
                 "Healing",
                 "True Damage"
             )
-            val adapter = ArrayAdapter(itemView.context, android.R.layout.simple_spinner_item, damageTypes)
+
+            val adapter =
+                ArrayAdapter(itemView.context, android.R.layout.simple_spinner_item, damageTypes)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             damageTakenTypeSpinner.adapter = adapter
 
             fightButton.setOnClickListener {
                 val damageText = damageTakenTextField.text.toString()
                 if (damageText.isNotEmpty()) {
-                    val damageType = damageTakenTypeSpinner.selectedItem.toString() // Get selected damage type
+                    val damageType =
+                        damageTakenTypeSpinner.selectedItem.toString() // Get selected damage type
                     val damage = damageText.toInt()
 
                     // Retrieve the damage value from the database
@@ -108,7 +125,10 @@ class PickedMonsterCardAdapter : RecyclerView.Adapter<PickedMonsterCardAdapter.P
 
                         else -> "None" // Default to "None" for unknown types
                     }
-                    Log.d("PickedMonsterCardAdapte", "Damage Type: $damageType, Damage Value: $damageValue")
+                    Log.d(
+                        "PickedMonsterCardAdapte",
+                        "Damage Type: $damageType, Damage Value: $damageValue"
+                    )
 
                     // Apply damage based on the retrieved value
                     when (damageValue) {
@@ -120,24 +140,34 @@ class PickedMonsterCardAdapter : RecyclerView.Adapter<PickedMonsterCardAdapter.P
                         else -> currentHP -= damage // Normal damage
                     }
 
-                    Log.d("MonsterCardAdapter", "current HP: $currentHP")
+                    Log.d("PickedMonsterCardAdapte", "current HP: $currentHP")
                     hpTextView.text = "$currentHP" // Update the UI
-
-                    if (currentHP <= 0) {
-                        // Remove the card when HP reaches 0 or below
-                        removeCard()
-                    }
 
                     damageTakenTextField.text.clear()
                 }
+            }
+
+            removeMonster.setOnClickListener {
+                removeCard()
             }
         }
 
 
         private fun removeCard() {
-            if (itemPosition >= 0) {
+            if (itemPosition >= 0 && itemPosition < monsters.size) {
                 monsters.removeAt(itemPosition)
                 notifyItemRemoved(itemPosition)
+                Log.d("PickedMonsterCardAdapte", "Removed item at position $itemPosition")
+
+                // Update itemPosition for all view holders after removing an item
+                for (i in itemPosition until monsters.size) {
+                    val viewHolder = recyclerView.findViewHolderForAdapterPosition(i)
+                    if (viewHolder is PickedMonsterCardViewHolder) {
+                        viewHolder.itemPosition = i
+                    }
+                }
+
+                listener.onMonsterRemoved()
             }
         }
     }
