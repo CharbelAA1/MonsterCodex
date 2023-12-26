@@ -103,10 +103,11 @@ class MonsterCreatorScreen : AppCompatActivity() {
             return
         }
 
-        if (monsterACText.isEmpty() || monsterHPText.length > 4 || Integer.parseInt(monsterHPText) < 1) {
+        if (monsterACText.isEmpty() || monsterACText.length > 4 || Integer.parseInt(monsterHPText) < 1) {
             Toast.makeText(this, "Monster AC must not be empty and should be 4 characters or less", Toast.LENGTH_LONG).show()
             return
         }
+
 
         val monsterEntity = MonsterEntity(
             monsterName = monsterNameText,

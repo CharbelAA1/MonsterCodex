@@ -49,13 +49,11 @@ class PickedMonsterCardAdapter (private val recyclerView: RecyclerView,
     }
 
     inner class PickedMonsterCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val monsterNameTextView: TextView =
-            itemView.findViewById(R.id.monster_name_in_fight_screen)
+        private val monsterNameTextView: TextView = itemView.findViewById(R.id.monster_name_in_fight_screen)
         private val hpTextView: TextView = itemView.findViewById(R.id.hp_text_view)
         private val fightButton: Button = itemView.findViewById(R.id.fight_button_in_card)
         private val damageTakenTypeSpinner: Spinner = itemView.findViewById(R.id.damage_taken_type)
-        private val damageTakenTextField: EditText =
-            itemView.findViewById(R.id.damage_taken_text_field)
+        private val damageTakenTextField: EditText = itemView.findViewById(R.id.damage_taken_text_field)
         private val monsterAC: TextView = itemView.findViewById(R.id.ac_fight_screen_text_view)
         private val removeMonster: Button = itemView.findViewById(R.id.delete_monster)
 
